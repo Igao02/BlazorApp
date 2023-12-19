@@ -1,5 +1,6 @@
 ﻿@page "/categorie/create"
 @inject ApplicationDbContext Context
+@inject NavigationManager Navi
 @rendermode InteractiveServer
 
 <h1>Nova Categoria</h1>
@@ -27,5 +28,6 @@
     {
         await Context.Categories.AddAsync(Model);
         await Context.SaveChangesAsync();
+        Navi.NavigateTo("categorie");
     }
 }
