@@ -10,7 +10,7 @@
 @if (!Categories.Any())
 {
   <p class="text-center">
-      <em>Carregando as categorias...</em>
+      <em>Sem as categorias...</em>
   </p>
 }
 else
@@ -28,7 +28,11 @@ else
             {
                 <tr>
                     <td>@category.Id</td>
-                    <td>@category.Title</td>
+                    <td>
+                        <a href="/categorie/@category.Id">
+                            @category.Title
+                        </a>
+                    </td>
                     <td>
                         <a href="/categorie/edit/@category.Id" class="btn btn-primary">Editar</a>
                         &nbsp; &nbsp;
@@ -45,7 +49,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        await Task.Delay(5000);
+       
 
         Categories = await Context.Categories
         .AsNoTracking()

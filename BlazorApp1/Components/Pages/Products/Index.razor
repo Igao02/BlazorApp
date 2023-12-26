@@ -1,0 +1,69 @@
+﻿@page "/products"
+@using Microsoft.EntityFrameworkCore
+@inject ApplicationDbContext Context
+@attribute [StreamRendering(enabled: true)]
+
+<h1>Produtos</h1>
+
+<a href="/products/create" class="btn btn-primary">Novo Produto</a>
+
+@if (!Products.Any())
+{
+    <p class="text-center">
+        <em>Sem os Produtos...</em>
+    </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nome</th>
+                <th>Categoria</th>
+                <th>Preço</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Products)
+            {
+                <tr>
+                    <td>@product.Id</td>
+                    <td>
+                        <a href="/products/@product.Id">
+                            @product.Title
+                        </a>
+                    </td>
+                    <td>
+                        <!--Para realizar esta linha abaixo, é necessário o Include abaixo do Category, para realizar o inner join entre as duas tabelas-->
+                        @product.Category.Title
+                    </td>
+                    <td>
+                        @product.Price.ToString("C", new CultureInfo("pt-br"))
+                    </td>
+                    <td>
+                        <a href="/products/edit/@product.Id" class="btn btn-primary">Editar</a>
+                        &nbsp; &nbsp;
+                        <a href="/products/delete/@product.Id" class="btn btn-danger">Excluir</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code 
+{
+    public IEnumerable<Product> Products { get; set; } = Enumerable.Empty<Product>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Products = await Context
+        .Products
+        .AsNoTracking()
+        .Include(x => x.Category)
+        .ToListAsync();
+    }
+
+}

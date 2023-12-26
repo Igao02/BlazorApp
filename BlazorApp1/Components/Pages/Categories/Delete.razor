@@ -1,4 +1,4 @@
-﻿@page "/categorie/edit/{id:int}"
+﻿@page "/categorie/delete/{id:int}"
 @inject ApplicationDbContext Context
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
@@ -19,12 +19,12 @@ else
 
         <div class="mb-3">
             <label class="form-label">Nome da categoria</label>
-            <InputText @bind-Value="Model.Title" class="form-control" />
+            <InputText @bind-Value="Model.Title" class="form-control" readonly />
             <ValidationMessage For="@(() => Model.Title)" />
         </div>
 
-        <button type="submit" class="btn btn-primary">
-            Atualizar Categoria
+        <button type="submit" class="btn btn-danger">
+            Excluir Categoria
         </button>
         <a href="/categorie">Cancelar</a>
 
@@ -50,7 +50,7 @@ else
 
     public async Task OnValidSubmit()
     {
-        Context.Categories.Update(Model);
+        Context.Categories.Remove(Model);
         await Context.SaveChangesAsync();
         Navigation.NavigateTo("categorie");
     }
