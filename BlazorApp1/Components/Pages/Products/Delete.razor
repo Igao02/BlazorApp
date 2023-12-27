@@ -1,14 +1,13 @@
-﻿@page "/categorie/delete/{id:int}"
+﻿@page "/products/delete/{id:int}"
 @inject ApplicationDbContext Context
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
 @attribute [Authorize]
 
-
 @if (Model is null)
 {
     <p class="text-center">
-        <em>Categoria não encontrada</em>
+        <em>Produto não encontrada</em>
     </p>
 }
 else
@@ -19,15 +18,15 @@ else
         <ValidationSummary></ValidationSummary>
 
         <div class="mb-3">
-            <label class="form-label">Nome da categoria</label>
+            <label class="form-label">Nome do Produto</label>
             <InputText @bind-Value="Model.Title" class="form-control" readonly />
             <ValidationMessage For="@(() => Model.Title)" />
         </div>
 
         <button type="submit" class="btn btn-danger">
-            Excluir Categoria
+            Excluir Produto
         </button>
-        <a href="/categorie">Cancelar</a>
+        <a href="/products">Cancelar</a>
 
 
     </EditForm>
@@ -39,21 +38,21 @@ else
     [Parameter]
     public int Id { get; set; }
 
-    public Category? Model { get; set; }
+    public Product? Model { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         Model = await Context
-            .Categories
-            .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Id == Id);
+        .Products
+        .AsNoTracking()
+        .FirstOrDefaultAsync(x => x.Id == Id);
     }
 
     public async Task OnValidSubmit()
     {
-        Context.Categories.Remove(Model);
+        Context.Products.Remove(Model);
         await Context.SaveChangesAsync();
-        Navigation.NavigateTo("categorie");
+        Navigation.NavigateTo("products");
     }
 
 }

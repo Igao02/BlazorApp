@@ -2,7 +2,7 @@
 @inject ApplicationDbContext Context
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
-
+@attribute [Authorize]
 
 <h1>@Model.Title</h1>
 <EditForm Model="@Model" OnValidSubmit="OnValidSubmitAsync">
@@ -36,17 +36,16 @@
     <button type="submit" class="btn btn-primary">
         Salvar
     </button>
-    <a href="/categories">Cancelar</a>
+    <a href="/Products">Cancelar</a>
 </EditForm>
 
 @code {
-
     [Parameter]
     public int Id { get; set; }
     public Product Model { get; set; } = new();
     public IEnumerable<Category> Categories { get; set; } = Enumerable.Empty<Category>();
 
-    protected override async void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         Model = await Context
             .Products
